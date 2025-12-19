@@ -1,10 +1,10 @@
 "use client";
 import Nav from '../components/Nav';
 import { CheckCircle, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 
-export default function PricingPage() {
+function PricingContent() {
   const searchParams = useSearchParams();
   const [selectedFile, setSelectedFile] = useState(null);
   const [loadingFile, setLoadingFile] = useState(false);
@@ -34,7 +34,6 @@ export default function PricingPage() {
 
     return (
     <div className="bg-gray-50 min-h-screen">
-      <Nav />
       <section className="bg-gradient-to-r from-blue-900 to-blue-950 text-white py-16">
         <div className="container mx-auto px-6 text-center">
           <h1 className="text-5xl font-bold mb-4">Choose the Plan That Fits Your Study Needs</h1>
@@ -140,5 +139,16 @@ export default function PricingPage() {
         </div>
       </footer>
     </div>
+  );
+}
+
+export default function PricingPage() {
+  return (
+    <>
+      <Nav />
+      <Suspense fallback={<div className="bg-gray-50 min-h-screen"><div className="container mx-auto px-6 py-12">Loading...</div></div>}>
+        <PricingContent />
+      </Suspense>
+    </>
   );
 }
